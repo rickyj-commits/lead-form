@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alvarez & Associates — Let's Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B3A5C;
+    --blue: #2E75B6;
+    --blue-light: #EBF3FC;
+    --blue-mid: #BFDBFE;
+    --green-bg: #F0FDF4;
+    --green-border: #86EFAC;
+    --green-text: #166534;
+    --gold: #B8860B;
+    --gold-bg: #FFFDE7;
+    --red-bg: #FEF2F2;
+    --red-border: #FCA5A5;
+    --red-text: #991B1B;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --radius: 10px;
+    --radius-sm: 7px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #F0F4F8;
+    min-height: 100vh;
+    color: var(--gray-900);
+    padding: 2rem 1rem 4rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 560px; margin: 0 auto; }
+
+  /* ── Brand header ── */
+  .brand {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 1.75rem;
+  }
+  .brand-mark {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-mark svg { width: 22px; height: 22px; }
+  .brand-name { font-size: 15px; font-weight: 600; color: var(--navy); letter-spacing: -.01em; }
+  .brand-sub { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+
+  /* ── Card ── */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── Hero ── */
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: .07em;
+    color: var(--blue); text-transform: uppercase; margin-bottom: .5rem;
+  }
+  .hero-title {
+    font-size: 22px; font-weight: 600; color: var(--navy);
+    line-height: 1.3; margin-bottom: .625rem; letter-spacing: -.02em;
+  }
+  .hero-body { font-size: 14px; color: var(--gray-500); line-height: 1.65; }
+
+  /* ── Progress ── */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-track {
+    height: 4px; background: var(--gray-100);
+    border-radius: 99px; overflow: hidden; margin-bottom: .875rem;
+  }
+  .progress-fill {
+    height: 100%; background: var(--blue);
+    border-radius: 99px; transition: width .35s ease;
+  }
+  .step-dots { display: flex; align-items: center; gap: 0; }
+  .step-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; flex-shrink: 0;
+    transition: all .2s;
+  }
+  .step-dot.done  { background: var(--navy); color: #fff; }
+  .step-dot.active{ background: var(--blue); color: #fff; box-shadow: 0 0 0 3px var(--blue-mid); }
+  .step-dot.todo  { background: var(--gray-100); color: var(--gray-400); border: 1px solid var(--gray-200); }
+  .step-line { flex: 1; height: 2px; background: var(--gray-200); }
+  .step-line.done { background: var(--navy); }
+
+  /* ── Section label ── */
+  .sec-label {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 600; color: var(--blue);
+    margin-bottom: 1.125rem; letter-spacing: .02em;
+  }
+  .sec-label svg { width: 15px; height: 15px; }
+
+  /* ── Type cards ── */
+  .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: .5rem; }
+  .type-card {
+    padding: 1rem; border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius); background: #fff;
+    cursor: pointer; text-align: left; transition: all .15s;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .type-card:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .type-card.selected { border-color: var(--blue); border-width: 2px; background: var(--blue-light); }
+  .type-card svg { width: 20px; height: 20px; color: var(--gray-400); flex-shrink: 0; margin-top: 1px; }
+  .type-card.selected svg { color: var(--blue); }
+  .type-label { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+  .type-sub { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+
+  /* ── Fields ── */
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block; font-size: 12px; font-weight: 600;
+    color: var(--gray-700); margin-bottom: 5px;
+  }
+  .field label .req { color: #EF4444; margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 13px;
+    border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+    font-size: 14px; font-family: inherit; color: var(--gray-900);
+    background: #fff; outline: none; transition: border .15s;
+    appearance: none; -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-light);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: var(--gray-400); }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  /* ── Timeline options ── */
+  .timeline-opts { display: flex; flex-direction: column; gap: 8px; }
+  .timeline-opt {
+    width: 100%; padding: 1rem 1.125rem;
+    border: 1.5px solid var(--gray-200); border-radius: var(--radius);
+    background: #fff; cursor: pointer; display: flex;
+    align-items: center; justify-content: space-between;
+    transition: all .15s; text-align: left;
+  }
+  .timeline-opt:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .timeline-opt.selected { border-color: var(--blue); border-width: 2px; background: var(--blue-light); }
+  .tl-label { font-size: 14px; color: var(--gray-900); transition: font-weight .1s; }
+  .timeline-opt.selected .tl-label { font-weight: 600; color: var(--navy); }
+  .tag-pill {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 99px; white-space: nowrap;
+  }
+  .tag-hot    { background: #FEE2E2; color: #991B1B; }
+  .tag-warm   { background: #FEF3C7; color: #92400E; }
+  .tag-nurture{ background: #DBEAFE; color: #1E40AF; }
+  .tag-long   { background: #F3F4F6; color: #4B5563; }
+
+  /* ── Alert boxes ── */
+  .alert {
+    padding: .75rem 1rem; border-radius: var(--radius-sm);
+    font-size: 13px; display: flex; align-items: flex-start;
+    gap: 8px; margin-bottom: 1rem; line-height: 1.5;
+  }
+  .alert svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-info  { background: var(--blue-light); border: 1px solid var(--blue-mid); color: #1E40AF; }
+  .alert-warn  { background: var(--gold-bg); border: 1px solid #FCD34D; color: #92400E; }
+  .alert-error { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
+  .alert-success { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green-text); }
+
+  /* ── Summary ── */
+  .summary-box {
+    background: #F8FAFF; border: 1px solid var(--blue-mid);
+    border-radius: var(--radius); padding: 1.125rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .summary-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 6px 0; border-bottom: 1px solid var(--gray-100);
+    font-size: 13px;
+  }
+  .summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .sk { color: var(--gray-500); flex-shrink: 0; margin-right: 1rem; }
+  .sv { color: var(--gray-900); font-weight: 500; text-align: right; max-width: 65%; }
+  .tags-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: .75rem; }
+
+  /* ── Nav buttons ── */
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; gap: 10px; }
+  .btn-back {
+    padding: 10px 18px; border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm); background: #fff;
+    font-size: 13px; font-weight: 500; color: var(--gray-700);
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: all .15s; font-family: inherit;
+  }
+  .btn-back:hover { background: var(--gray-50); border-color: var(--gray-300); }
+  .btn-back:disabled { opacity: .35; cursor: default; }
+  .btn-next {
+    padding: 10px 22px; border: none; border-radius: var(--radius-sm);
+    background: var(--navy); color: #fff;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: all .15s; font-family: inherit; margin-left: auto;
+  }
+  .btn-next:hover { background: var(--blue); }
+  .btn-next:disabled { opacity: .4; cursor: default; }
+  .btn-submit {
+    padding: 11px 24px; border: none; border-radius: var(--radius-sm);
+    background: var(--navy); color: #fff;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: all .15s; font-family: inherit; margin-left: auto;
+  }
+  .btn-submit:hover:not(:disabled) { background: var(--blue); }
+  .btn-submit:disabled { opacity: .45; cursor: default; }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: var(--gray-100); margin: 1.25rem 0; }
+
+  /* ── Success screen ── */
+  .success-wrap { text-align: center; padding: 1rem 0 .5rem; }
+  .success-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--green-bg); display: flex;
+    align-items: center; justify-content: center; margin: 0 auto 1.25rem;
+  }
+  .success-icon svg { width: 32px; height: 32px; color: #16A34A; }
+  .success-title { font-size: 21px; font-weight: 700; color: var(--navy); margin-bottom: .5rem; letter-spacing: -.02em; }
+  .success-body { font-size: 14px; color: var(--gray-500); line-height: 1.65; max-width: 380px; margin: 0 auto 1.5rem; }
+  .next-steps {
+    background: var(--blue-light); border-radius: var(--radius);
+    padding: 1.125rem 1.25rem; text-align: left; margin-bottom: 1rem;
+  }
+  .next-steps-title { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: .75rem; letter-spacing: .02em; text-transform: uppercase; }
+  .next-step { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--gray-700); padding: 5px 0; line-height: 1.5; }
+  .next-step svg { width: 15px; height: 15px; color: var(--blue); flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center; font-size: 11px; color: var(--gray-400);
+    margin-top: 1.25rem; display: flex; align-items: center;
+    justify-content: center; gap: 5px;
+  }
+  .footer svg { width: 12px; height: 12px; }
+
+  /* ── Hidden ── */
+  .hidden { display: none !important; }
+
+  /* ── Responsive ── */
+  @media (max-width: 480px) {
+    body { padding: 1.25rem .75rem 3rem; }
+    .card { padding: 1.25rem; }
+    .type-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .hero-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Brand -->
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">Alvarez &amp; Associates</div>
+      <div class="brand-sub">BLVD Real Estate &nbsp;·&nbsp; Better Living. Value Delivered.</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="card">
+    <div class="hero-eyebrow">Free consultation</div>
+    <div class="hero-title">Let's find your perfect home — or sell for top dollar.</div>
+    <div class="hero-body">Fill out a few quick details and Ricky will personally reach out within 24 hours to set up a no-pressure conversation tailored to your goals.</div>
+  </div>
+
+  <!-- Form card -->
+  <div class="card">
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:20%"></div>
+      </div>
+      <div class="step-dots">
+        <div class="step-dot active" id="dot-0">1</div>
+        <div class="step-line" id="line-0"></div>
+        <div class="step-dot todo"   id="dot-1">2</div>
+        <div class="step-line" id="line-1"></div>
+        <div class="step-dot todo"   id="dot-2">3</div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step-dot todo"   id="dot-3">4</div>
+        <div class="step-line" id="line-3"></div>
+        <div class="step-dot todo"   id="dot-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 0: Lead type ── -->
+    <div id="step-0">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        What best describes you?
+      </div>
+      <div class="type-grid">
+        <button class="type-card" onclick="pickType('buyer', this)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57l1.65-7.43H5.12"/></svg>
+          <div><div class="type-label">Buyer</div><div class="type-sub">Looking to purchase</div></div>
+        </button>
+        <button class="type-card" onclick="pickType('seller', this)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div><div class="type-label">Seller</div><div class="type-sub">Looking to sell</div></div>
+        </button>
+        <button class="type-card" onclick="pickType('both', this)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          <div><div class="type-label">Buy &amp; Sell</div><div class="type-sub">Doing both</div></div>
+        </button>
+        <button class="type-card" onclick="pickType('investor', this)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <div><div class="type-label">Investor</div><div class="type-sub">Investment purchase</div></div>
+        </button>
+      </div>
+      <div class="nav">
+        <button class="btn-back" disabled type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn-next" id="next-0" onclick="goNext(1)" disabled type="button">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 1: Contact info ── -->
+    <div id="step-1" class="hidden">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+        Your contact information
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>First name <span class="req">*</span></label>
+          <input type="text" id="f-first" placeholder="Maria" autocomplete="given-name" oninput="checkStep1()">
+        </div>
+        <div class="field">
+          <label>Last name <span class="req">*</span></label>
+          <input type="text" id="f-last" placeholder="Gonzalez" autocomplete="family-name" oninput="checkStep1()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Email address <span class="req">*</span></label>
+        <input type="email" id="f-email" placeholder="maria@email.com" autocomplete="email" oninput="checkStep1()">
+      </div>
+      <div class="field">
+        <label>Phone number</label>
+        <input type="tel" id="f-phone" placeholder="(510) 555-0100" autocomplete="tel">
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>How did you hear about Ricky?</label>
+          <select id="f-source" onchange="toggleReferral()">
+            <option value="">Select…</option>
+            <option>Instagram</option>
+            <option>Facebook</option>
+            <option>Referral from a friend</option>
+            <option>Google</option>
+            <option>Zillow / Realtor.com</option>
+            <option>Open house</option>
+            <option>Text / Email outreach</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field hidden" id="referral-wrap">
+          <label>Who referred you?</label>
+          <input type="text" id="f-referral" placeholder="Name of referral">
+        </div>
+      </div>
+      <div class="nav">
+        <button class="btn-back" onclick="goBack(0)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn-next" id="next-1" onclick="goNext(2)" disabled type="button">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Details ── -->
+    <div id="step-2" class="hidden">
+
+      <!-- Buyer section -->
+      <div id="buyer-sec">
+        <div class="sec-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57l1.65-7.43H5.12"/></svg>
+          Buying details
+        </div>
+        <div class="field">
+          <label>Areas or neighborhoods you're interested in</label>
+          <input type="text" id="f-areas" placeholder="e.g. Walnut Creek, Concord, Danville, East Bay…">
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Price range</label>
+            <select id="f-price">
+              <option value="">Select…</option>
+              <option>Under $500K</option>
+              <option>$500K – $750K</option>
+              <option>$750K – $1M</option>
+              <option>$1M – $1.5M</option>
+              <option>$1.5M+</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Pre-approval status</label>
+            <select id="f-approval">
+              <option value="">Select…</option>
+              <option>Yes, pre-approved</option>
+              <option>In process</option>
+              <option>Not yet — need a lender</option>
+              <option>Cash buyer</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Must-haves or wish list</label>
+          <textarea id="f-musthaves" placeholder="e.g. 3 bed, 2 bath, good school district, backyard, garage…" rows="2"></textarea>
+        </div>
+      </div>
+
+      <!-- Seller section -->
+      <div id="seller-sec" class="hidden">
+        <div class="divider" id="seller-divider"></div>
+        <div class="sec-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Selling details
+        </div>
+        <div class="field">
+          <label>Property address</label>
+          <input type="text" id="f-address" placeholder="1234 Oak St, Walnut Creek, CA 94596" autocomplete="street-address">
+        </div>
+        <div class="grid-3">
+          <div class="field">
+            <label>Property type</label>
+            <select id="f-proptype">
+              <option value="">Select…</option>
+              <option>Single family</option>
+              <option>Condo / Townhome</option>
+              <option>Multi-family</option>
+              <option>Land</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Years owned</label>
+            <input type="number" id="f-years" placeholder="e.g. 8" min="0" max="100">
+          </div>
+          <div class="field">
+            <label>Condition</label>
+            <select id="f-condition">
+              <option value="">Select…</option>
+              <option>Move-in ready</option>
+              <option>Minor updates needed</option>
+              <option>Fixer-upper</option>
+              <option>Not sure</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Price expectation</label>
+          <input type="text" id="f-priceexp" placeholder="e.g. $850,000 — or 'not sure, let Ricky tell me'">
+        </div>
+      </div>
+
+      <!-- Shared motivation -->
+      <div class="field">
+        <label>What's motivating your move?</label>
+        <textarea id="f-motivation" placeholder="e.g. Growing family, relocating for work, ready to downsize, cashing out equity…" rows="2"></textarea>
+      </div>
+
+      <div class="nav">
+        <button class="btn-back" onclick="goBack(1)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn-next" onclick="goNext(3)" type="button">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Timeline ── -->
+    <div id="step-3" class="hidden">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        When are you looking to make a move?
+      </div>
+      <div class="timeline-opts">
+        <button class="timeline-opt" onclick="pickTime('0-30','Hot',this)" type="button">
+          <span class="tl-label">Ready now — within 30 days</span>
+          <span class="tag-pill tag-hot">Hot</span>
+        </button>
+        <button class="timeline-opt" onclick="pickTime('30-90','Warm',this)" type="button">
+          <span class="tl-label">Soon — 1 to 3 months</span>
+          <span class="tag-pill tag-warm">Warm</span>
+        </button>
+        <button class="timeline-opt" onclick="pickTime('90-180','Nurture',this)" type="button">
+          <span class="tl-label">Planning ahead — 3 to 6 months</span>
+          <span class="tag-pill tag-nurture">Nurture</span>
+        </button>
+        <button class="timeline-opt" onclick="pickTime('180+','Long-Term',this)" type="button">
+          <span class="tl-label">Exploring — 6 months or more</span>
+          <span class="tag-pill tag-long">Long-Term</span>
+        </button>
+      </div>
+      <div class="field" style="margin-top:1.25rem">
+        <label>Anything else you'd like Ricky to know?</label>
+        <textarea id="f-notes" placeholder="Any questions, concerns, or context that would help him prepare for your conversation…" rows="3"></textarea>
+      </div>
+      <div class="nav">
+        <button class="btn-back" onclick="goBack(2)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn-next" id="next-3" onclick="goNext(4)" disabled type="button">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: Review & submit ── -->
+    <div id="step-4" class="hidden">
+      <div class="sec-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Review your information
+      </div>
+      <div class="summary-box">
+        <div id="summary-rows"></div>
+        <div class="tags-row" id="summary-tags"></div>
+      </div>
+      <div id="submit-status"></div>
+      <div class="nav">
+        <button class="btn-back" onclick="goBack(3)" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button class="btn-submit" id="submit-btn" onclick="submitForm()" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Submit to Ricky
+        </button>
+      </div>
+    </div>
+
+    <!-- ── SUCCESS ── -->
+    <div id="step-success" class="hidden">
+      <div class="success-wrap">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="success-title">You're all set!</div>
+        <div class="success-body">Thanks for reaching out. Ricky will personally be in touch within 24 hours to set up your free, no-pressure consultation.</div>
+        <div class="next-steps">
+          <div class="next-steps-title">What happens next</div>
+          <div class="next-step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            Ricky reviews your info and reaches out within 24 hours
+          </div>
+          <div class="next-step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            You'll schedule a free consultation at a time that works for you
+          </div>
+          <div class="next-step">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Ricky builds a personalized plan tailored to your goals
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--gray-500);margin-top:.5rem">
+          Questions? Reach Ricky directly at
+          <a href="tel:+15101234567" style="color:var(--blue);text-decoration:none;font-weight:500">(510) 123-4567</a>
+          or
+          <a href="mailto:ricky@blvdrealestate.com" style="color:var(--blue);text-decoration:none;font-weight:500">ricky@blvdrealestate.com</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    Your information is secure and will only be used to connect you with Ricky.
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  CONFIGURATION — EDIT THESE TWO VALUES
+// ─────────────────────────────────────────────
+const FUB_API_KEY = 'YOUR_FUB_API_KEY_HERE';
+const FUB_SOURCE  = 'Website Form';
+// ─────────────────────────────────────────────
+
+var state = {
+  type: '',
+  timeline: '',
+  timelineTag: '',
+  timelineLabel: ''
+};
+
+// ── Step navigation ──
+var currentStep = 0;
+
+function updateStepper(s) {
+  var pct = Math.round((s / 4) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  for (var i = 0; i < 5; i++) {
+    var dot = document.getElementById('dot-' + i);
+    if (i < s) {
+      dot.className = 'step-dot done';
+      dot.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else if (i === s) {
+      dot.className = 'step-dot active';
+      dot.innerHTML = i < 4 ? (i + 1) : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else {
+      dot.className = 'step-dot todo';
+      dot.innerHTML = i < 4 ? (i + 1) : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+    if (i < 4) {
+      document.getElementById('line-' + i).className = 'step-line' + (i < s ? ' done' : '');
+    }
+  }
+}
+
+function goNext(n) {
+  document.getElementById('step-' + currentStep).classList.add('hidden');
+  if (n === 4) buildSummary();
+  document.getElementById('step-' + n).classList.remove('hidden');
+  currentStep = n;
+  updateStepper(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBack(n) {
+  document.getElementById('step-' + currentStep).classList.add('hidden');
+  document.getElementById('step-' + n).classList.remove('hidden');
+  currentStep = n;
+  updateStepper(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Step 0: Lead type ──
+function pickType(type, el) {
+  state.type = type;
+  document.querySelectorAll('.type-card').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('next-0').disabled = false;
+
+  var isBuyer  = ['buyer','both','investor'].includes(type);
+  var isSeller = ['seller','both'].includes(type);
+  var bs = document.getElementById('buyer-sec');
+  var ss = document.getElementById('seller-sec');
+  var sd = document.getElementById('seller-divider');
+
+  if (isBuyer)  { bs.classList.remove('hidden'); } else { bs.classList.add('hidden'); }
+  if (isSeller) { ss.classList.remove('hidden'); sd.classList.remove('hidden'); }
+  else          { ss.classList.add('hidden');    sd.classList.add('hidden'); }
+}
+
+// ── Step 1: Contact info validation ──
+function checkStep1() {
+  var ok = val('f-first') && val('f-last') && val('f-email').includes('@') && val('f-email').includes('.');
+  document.getElementById('next-1').disabled = !ok;
+}
+
+function toggleReferral() {
+  var src = document.getElementById('f-source').value;
+  var wrap = document.getElementById('referral-wrap');
+  src === 'Referral from a friend' ? wrap.classList.remove('hidden') : wrap.classList.add('hidden');
+}
+
+// ── Step 3: Timeline ──
+var tlMap = {
+  '0-30':  'Ready now — within 30 days',
+  '30-90': 'Soon — 1 to 3 months',
+  '90-180':'Planning ahead — 3 to 6 months',
+  '180+':  'Exploring — 6 months or more'
+};
+
+function pickTime(value, tag, el) {
+  state.timeline      = value;
+  state.timelineTag   = tag;
+  state.timelineLabel = tlMap[value] || value;
+  document.querySelectorAll('.timeline-opt').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('next-3').disabled = false;
+}
+
+// ── Step 4: Summary ──
+function buildSummary() {
+  var isBuyer  = ['buyer','both','investor'].includes(state.type);
+  var isSeller = ['seller','both'].includes(state.type);
+
+  var typeLabels = { buyer:'Buyer', seller:'Seller', both:'Buy & Sell', investor:'Investor' };
+  var rows = [
+    ['Name',     val('f-first') + ' ' + val('f-last')],
+    ['Email',    val('f-email')],
+    ['Phone',    val('f-phone') || '—'],
+    ['Type',     typeLabels[state.type] || '—'],
+    ['Source',   val('f-source') || '—'],
+    ['Timeline', state.timelineLabel || '—'],
+  ];
+
+  if (isBuyer) {
+    if (val('f-areas'))    rows.push(['Target areas', val('f-areas')]);
+    if (val('f-price'))    rows.push(['Price range',  val('f-price')]);
+    if (val('f-approval')) rows.push(['Pre-approval', val('f-approval')]);
+  }
+  if (isSeller) {
+    if (val('f-address'))  rows.push(['Property',         val('f-address')]);
+    if (val('f-condition'))rows.push(['Condition',        val('f-condition')]);
+    if (val('f-priceexp')) rows.push(['Price expectation',val('f-priceexp')]);
+  }
+
+  var html = rows.map(function(r) {
+    return '<div class="summary-row"><span class="sk">' + r[0] + '</span><span class="sv">' + esc(r[1]) + '</span></div>';
+  }).join('');
+  document.getElementById('summary-rows').innerHTML = html;
+
+  var tagDefs = { buyer:['Buyer'], seller:['Seller'], both:['Buyer','Seller'], investor:['Buyer','Investor'] };
+  var tagClass = { Hot:'tag-hot', Warm:'tag-warm', Nurture:'tag-nurture', 'Long-Term':'tag-long' };
+  var tags = (tagDefs[state.type] || []).concat(state.timelineTag ? [state.timelineTag] : []);
+  document.getElementById('summary-tags').innerHTML = tags.map(function(t) {
+    return '<span class="tag-pill ' + (tagClass[t] || 'tag-long') + '">' + t + '</span>';
+  }).join('');
+}
+
+// ── Submit to Follow Up Boss ──
+async function submitForm() {
+  var btn = document.getElementById('submit-btn');
+  var statusEl = document.getElementById('submit-status');
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;animation:spin 1s linear infinite"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Submitting…';
+
+  var tagDefs = { buyer:['Buyer'], seller:['Seller'], both:['Buyer','Seller'], investor:['Buyer','Investor'] };
+  var tags = (tagDefs[state.type] || []).concat(state.timelineTag ? [state.timelineTag] : []);
+
+  var payload = {
+    firstName: val('f-first'),
+    lastName:  val('f-last'),
+    emails:    val('f-email') ? [{ value: val('f-email'), type: 'work' }] : [],
+    phones:    val('f-phone') ? [{ value: val('f-phone'), type: 'mobile' }] : [],
+    stage:  'Inquired',
+    source: val('f-source') || FUB_SOURCE,
+    tags:   tags,
+    notes:  buildNotes(tags)
+  };
+
+  try {
+    var res = await fetch('https://api.followupboss.com/v1/people', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(FUB_API_KEY + ':')
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok || res.status === 201) {
+      document.getElementById('step-4').classList.add('hidden');
+      document.getElementById('step-success').classList.remove('hidden');
+      updateStepper(5);
+    } else {
+      var err = {};
+      try { err = await res.json(); } catch(e) {}
+      statusEl.innerHTML = '<div class="alert alert-error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + (err.message || 'Something went wrong. Please try again.') + '</div>';
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Submit to Ricky';
+    }
+  } catch(e) {
+    statusEl.innerHTML = '<div class="alert alert-error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Connection error. Please check your internet and try again.</div>';
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Submit to Ricky';
+  }
+}
+
+function buildNotes(tags) {
+  var isBuyer  = ['buyer','both','investor'].includes(state.type);
+  var isSeller = ['seller','both'].includes(state.type);
+  var typeLabels = { buyer:'Buyer', seller:'Seller', both:'Buy & Sell', investor:'Investor' };
+  var lines = [
+    '=== LEAD INTAKE FORM — ' + new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) + ' ===',
+    'Lead Type: ' + (typeLabels[state.type] || state.type),
+    'Timeline: ' + (state.timelineLabel || state.timeline),
+    'FUB Tags: ' + tags.join(', '),
+    'Source: ' + (val('f-source') || FUB_SOURCE) + (val('f-referral') ? ' (Referred by: ' + val('f-referral') + ')' : ''),
+    ''
+  ];
+  if (isBuyer) {
+    lines.push('--- BUYER INFO ---');
+    if (val('f-areas'))    lines.push('Target Areas: '   + val('f-areas'));
+    if (val('f-price'))    lines.push('Price Range: '    + val('f-price'));
+    if (val('f-approval')) lines.push('Pre-Approval: '   + val('f-approval'));
+    if (val('f-musthaves'))lines.push('Must-Haves: '     + val('f-musthaves'));
+    lines.push('');
+  }
+  if (isSeller) {
+    lines.push('--- SELLER INFO ---');
+    if (val('f-address'))  lines.push('Property: '          + val('f-address'));
+    if (val('f-proptype')) lines.push('Type: '              + val('f-proptype'));
+    if (val('f-years'))    lines.push('Years Owned: '       + val('f-years'));
+    if (val('f-condition'))lines.push('Condition: '         + val('f-condition'));
+    if (val('f-priceexp')) lines.push('Price Expectation: ' + val('f-priceexp'));
+    lines.push('');
+  }
+  if (val('f-motivation')) lines.push('Motivation: ' + val('f-motivation'));
+  if (val('f-notes'))      lines.push('Additional Notes: ' + val('f-notes'));
+  lines.push('');
+  lines.push('— Submitted via Alvarez & Associates Lead Intake Form');
+  return lines.join('\n');
+}
+
+// ── Helpers ──
+function val(id) {
+  var el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+</body>
+</html>
