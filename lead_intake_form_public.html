@@ -1,574 +1,513 @@
+import { useState } from "react";
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans,system-ui,sans-serif);background:#f4f6f9;min-height:100vh;padding:2rem 1rem}
-.page{max-width:540px;margin:0 auto}
-.brand{display:flex;align-items:center;gap:12px;margin-bottom:2rem}
-.brand-mark{width:40px;height:40px;background:#1B3A5C;border-radius:10px;display:flex;align-items:center;justify-content:center}
-.brand-mark i{font-size:20px;color:#fff}
-.brand-name{font-size:15px;font-weight:500;color:#1B3A5C}
-.brand-sub{font-size:12px;color:#6b7280}
-.card{background:#fff;border-radius:14px;border:0.5px solid #e5e7eb;padding:2rem;margin-bottom:1rem}
-.hero-label{font-size:11px;font-weight:500;letter-spacing:.06em;color:#2E75B6;text-transform:uppercase;margin-bottom:.5rem}
-.hero-title{font-size:22px;font-weight:500;color:#1B3A5C;margin-bottom:.5rem;line-height:1.3}
-.hero-sub{font-size:14px;color:#6b7280;line-height:1.6}
-.divider{height:0.5px;background:#e5e7eb;margin:1.5rem 0}
-.step-row{display:flex;align-items:center;gap:0;margin-bottom:2rem}
-.step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
-.step-dot.done{background:#1B3A5C;color:#fff}
-.step-dot.active{background:#2E75B6;color:#fff;outline:3px solid #dbeafe;outline-offset:0}
-.step-dot.todo{background:#f3f4f6;color:#9ca3af;border:0.5px solid #e5e7eb}
-.step-line{flex:1;height:1.5px;background:#e5e7eb}
-.step-line.done{background:#1B3A5C}
-.section-title{font-size:13px;font-weight:500;color:#1B3A5C;display:flex;align-items:center;gap:6px;margin-bottom:1.25rem}
-.section-title i{font-size:15px;color:#2E75B6}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.field{margin-bottom:1rem}
-.field label{display:block;font-size:12px;font-weight:500;color:#374151;margin-bottom:5px}
-.field label .req{color:#ef4444;margin-left:2px}
-.field input,.field select,.field textarea{width:100%;padding:9px 12px;border:0.5px solid #d1d5db;border-radius:8px;font-size:14px;color:#111827;background:#fff;outline:none;transition:border .15s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:#2E75B6;box-shadow:0 0 0 3px #dbeafe}
-.field textarea{resize:vertical;min-height:72px;line-height:1.5}
-.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
-.choice-btn{padding:.75rem 1rem;border:0.5px solid #d1d5db;border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:center;gap:10px}
-.choice-btn:hover{border-color:#93c5fd;background:#eff6ff}
-.choice-btn.sel{border:2px solid #2E75B6;background:#EBF3FC}
-.choice-btn i{font-size:18px;color:#6b7280}
-.choice-btn.sel i{color:#2E75B6}
-.choice-btn .c-label{font-size:13px;font-weight:500;color:#111827}
-.choice-btn .c-sub{font-size:11px;color:#6b7280;margin-top:1px}
-.timeline-opt{width:100%;padding:.875rem 1rem;border:0.5px solid #d1d5db;border-radius:10px;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;transition:all .15s;text-align:left}
-.timeline-opt:hover{border-color:#93c5fd;background:#f8faff}
-.timeline-opt.sel{border:2px solid #2E75B6;background:#EBF3FC}
-.timeline-opt .t-label{font-size:14px;color:#111827;font-weight:400}
-.timeline-opt.sel .t-label{font-weight:500;color:#1B3A5C}
-.tag-pill{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
-.tag-hot{background:#fee2e2;color:#991b1b}
-.tag-warm{background:#fef3c7;color:#92400e}
-.tag-nurture{background:#dbeafe;color:#1e40af}
-.tag-long{background:#f3f4f6;color:#4b5563}
-.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:10px}
-.btn-back{padding:9px 18px;border:0.5px solid #d1d5db;border-radius:8px;background:#fff;font-size:14px;color:#374151;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
-.btn-back:hover{background:#f9fafb;border-color:#9ca3af}
-.btn-back:disabled{opacity:.35;cursor:default}
-.btn-next{padding:9px 20px;border:none;border-radius:8px;background:#1B3A5C;color:#fff;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;margin-left:auto}
-.btn-next:hover{background:#2E75B6}
-.btn-next:disabled{opacity:.4;cursor:default}
-.btn-submit{padding:10px 24px;border:none;border-radius:8px;background:#1B3A5C;color:#fff;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;margin-left:auto;transition:all .15s}
-.btn-submit:hover{background:#2E75B6}
-.btn-submit:disabled{opacity:.45;cursor:default}
-.summary-grid{display:flex;flex-direction:column;gap:0}
-.summary-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:0.5px solid #f3f4f6;font-size:13px}
-.summary-row .sk{color:#6b7280}
-.summary-row .sv{color:#111827;font-weight:400;text-align:right;max-width:60%}
-.tags-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:.5rem}
-.alert{padding:.75rem 1rem;border-radius:8px;font-size:13px;display:flex;align-items:flex-start;gap:8px;margin-bottom:1rem}
-.alert i{font-size:15px;flex-shrink:0;margin-top:1px}
-.alert-success{background:#f0fdf4;border:0.5px solid #86efac;color:#166534}
-.alert-error{background:#fef2f2;border:0.5px solid #fca5a5;color:#991b1b}
-.alert-info{background:#eff6ff;border:0.5px solid #93c5fd;color:#1e40af}
-.success-state{text-align:center;padding:1rem 0}
-.success-icon{width:60px;height:60px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
-.success-icon i{font-size:28px;color:#16a34a}
-.next-steps{background:#f8faff;border-radius:10px;padding:1rem 1.25rem;text-align:left;margin-top:1.25rem}
-.next-step-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#374151;padding:4px 0}
-.next-step-item i{font-size:14px;color:#2E75B6;margin-top:1px;flex-shrink:0}
-.progress-bar{height:3px;background:#e5e7eb;border-radius:2px;margin-bottom:1.5rem;overflow:hidden}
-.progress-fill{height:100%;background:#2E75B6;border-radius:2px;transition:width .3s ease}
-.hidden{display:none}
-.setup-note{background:#fffbeb;border:0.5px solid #fcd34d;border-radius:8px;padding:.75rem 1rem;font-size:12px;color:#92400e;margin-bottom:1rem;display:flex;gap:8px;align-items:flex-start}
-.setup-note i{font-size:14px;flex-shrink:0;margin-top:1px}
-</style>
+const STEPS = [
+  { id: "type", label: "Lead Type" },
+  { id: "contact", label: "Contact Info" },
+  { id: "details", label: "Details" },
+  { id: "timeline", label: "Timeline" },
+  { id: "confirm", label: "Confirm" },
+];
 
-<div class="page">
-  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">Alvarez &amp; Associates lead intake form — fills out your details and submits to Follow Up Boss</h2>
+const STAGE_MAP = {
+  buyer: "Inquired",
+  seller: "Inquired",
+  both: "Inquired",
+  investor: "Inquired",
+};
 
-  <div class="brand">
-    <div class="brand-mark"><i class="ti ti-home-2" aria-hidden="true"></i></div>
-    <div>
-      <div class="brand-name">Alvarez &amp; Associates</div>
-      <div class="brand-sub">BLVD Real Estate &nbsp;·&nbsp; Better Living. Value Delivered.</div>
+const TAG_MAP = {
+  buyer: ["Buyer"],
+  seller: ["Seller"],
+  both: ["Buyer", "Seller"],
+  investor: ["Investor", "Buyer"],
+};
+
+const SOURCE_OPTIONS = [
+  "Facebook Ad",
+  "Instagram Ad",
+  "Referral",
+  "Cold Call",
+  "Website",
+  "Open House",
+  "Other",
+];
+
+const TIMELINE_OPTIONS = [
+  { value: "0-30", label: "Ready now (0–30 days)", tag: "Hot" },
+  { value: "30-90", label: "Soon (30–90 days)", tag: "Warm" },
+  { value: "90-180", label: "Planning ahead (3–6 months)", tag: "Nurture" },
+  { value: "180+", label: "Exploring (6+ months)", tag: "Long-Term" },
+];
+
+const PRICE_RANGES = [
+  "Under $500K",
+  "$500K – $750K",
+  "$750K – $1M",
+  "$1M – $1.5M",
+  "$1.5M+",
+  "Not sure yet",
+];
+
+const APPROVAL_OPTIONS = [
+  "Yes, pre-approved",
+  "In process",
+  "Not yet — needs lender referral",
+  "Cash buyer",
+  "N/A (Seller)",
+];
+
+function ProgressBar({ current }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: "2rem" }}>
+      {STEPS.map((s, i) => {
+        const done = i < current;
+        const active = i === current;
+        return (
+          <div key={s.id} style={{ display: "flex", alignItems: "center", flex: i < STEPS.length - 1 ? 1 : "none" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: "50%",
+                background: done ? "#1B3A5C" : active ? "#2E75B6" : "var(--color-background-secondary)",
+                border: active ? "2px solid #2E75B6" : done ? "2px solid #1B3A5C" : "1.5px solid var(--color-border-tertiary)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 12, fontWeight: 500,
+                color: done || active ? "#fff" : "var(--color-text-tertiary)",
+                transition: "all 0.2s",
+              }}>
+                {done ? <i className="ti ti-check" style={{ fontSize: 13 }} /> : i + 1}
+              </div>
+              <span style={{ fontSize: 10, color: active ? "#2E75B6" : "var(--color-text-tertiary)", whiteSpace: "nowrap", fontWeight: active ? 500 : 400 }}>
+                {s.label}
+              </span>
+            </div>
+            {i < STEPS.length - 1 && (
+              <div style={{ flex: 1, height: 1.5, background: done ? "#1B3A5C" : "var(--color-border-tertiary)", margin: "0 6px", marginBottom: 18, transition: "background 0.3s" }} />
+            )}
+          </div>
+        );
+      })}
     </div>
-  </div>
+  );
+}
 
-  <div id="setup-banner" class="setup-note">
-    <i class="ti ti-settings" aria-hidden="true"></i>
-    <span><strong>Setup (one time):</strong> Enter your FUB API key below to activate the form. This gets embedded into the shareable link — leads never see it.</span>
-  </div>
-
-  <div id="setup-card" class="card">
-    <div class="section-title"><i class="ti ti-key" aria-hidden="true"></i> Connect Follow Up Boss</div>
-    <div class="field">
-      <label>Your FUB API key <span class="req">*</span></label>
-      <input type="password" id="api-key-input" placeholder="Paste your API key here…" />
-      <div style="font-size:11px;color:#6b7280;margin-top:5px">Find this in FUB &rarr; Admin &rarr; API &rarr; Your API Keys</div>
-    </div>
-    <div class="field">
-      <label>Your FUB source tag (optional)</label>
-      <input type="text" id="source-input" placeholder="e.g. Website Form, Instagram Link" value="Website Form" />
-    </div>
-    <button class="btn-submit" id="activate-btn" onclick="activateForm()" style="margin-left:0">
-      <i class="ti ti-bolt" aria-hidden="true"></i> Activate &amp; generate link
+function ChoiceCard({ label, sub, icon, selected, onClick }) {
+  return (
+    <button onClick={onClick} style={{
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      gap: 8, padding: "1.25rem 1rem",
+      border: selected ? "2px solid #2E75B6" : "1.5px solid var(--color-border-tertiary)",
+      borderRadius: "var(--border-radius-lg)",
+      background: selected ? "#EBF3FC" : "var(--color-background-primary)",
+      cursor: "pointer", transition: "all 0.15s", flex: 1, minWidth: 100,
+    }}>
+      <i className={`ti ${icon}`} style={{ fontSize: 22, color: selected ? "#2E75B6" : "var(--color-text-secondary)" }} aria-hidden="true" />
+      <span style={{ fontSize: 14, fontWeight: 500, color: selected ? "#1B3A5C" : "var(--color-text-primary)" }}>{label}</span>
+      {sub && <span style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>{sub}</span>}
     </button>
-  </div>
-
-  <div id="link-card" class="card hidden">
-    <div class="section-title"><i class="ti ti-link" aria-hidden="true"></i> Your shareable form link</div>
-    <div style="background:#f8faff;border:0.5px solid #bfdbfe;border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem">
-      <div style="font-size:11px;color:#1e40af;margin-bottom:4px;font-weight:500">SHAREABLE URL</div>
-      <div id="share-url" style="font-size:12px;color:#1e40af;word-break:break-all;font-family:monospace"></div>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn-back" onclick="copyLink()" id="copy-btn"><i class="ti ti-copy" aria-hidden="true"></i> Copy link</button>
-      <button class="btn-back" onclick="showForm()" style="margin-left:auto"><i class="ti ti-eye" aria-hidden="true"></i> Preview form</button>
-    </div>
-    <div style="margin-top:1rem;padding-top:1rem;border-top:0.5px solid #f3f4f6">
-      <div style="font-size:12px;color:#6b7280;font-weight:500;margin-bottom:.5rem">Share via</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-back" onclick="shareVia('text')" style="font-size:12px;padding:6px 12px"><i class="ti ti-message" aria-hidden="true"></i> Text</button>
-        <button class="btn-back" onclick="shareVia('email')" style="font-size:12px;padding:6px 12px"><i class="ti ti-mail" aria-hidden="true"></i> Email</button>
-        <button class="btn-back" onclick="shareVia('bio')" style="font-size:12px;padding:6px 12px"><i class="ti ti-brand-instagram" aria-hidden="true"></i> Link in bio</button>
-        <button class="btn-back" onclick="shareVia('qr')" style="font-size:12px;padding:6px 12px"><i class="ti ti-qrcode" aria-hidden="true"></i> QR code</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="share-msg" class="alert alert-info hidden" style="margin-top:.5rem"></div>
-
-  <div id="form-wrapper" class="hidden">
-
-    <div class="card" style="padding:1.5rem 2rem 1rem">
-      <div class="hero-label">Free consultation</div>
-      <div class="hero-title">Let&rsquo;s find your perfect home — or sell for top dollar.</div>
-      <div class="hero-sub">Fill out a few quick details and Ricky will reach out to set up a personalized, no-pressure conversation.</div>
-    </div>
-
-    <div class="card">
-      <div class="progress-bar"><div class="progress-fill" id="prog" style="width:20%"></div></div>
-
-      <div class="step-row" id="stepper">
-        <div class="step-dot active" id="sd0">1</div>
-        <div class="step-line" id="sl0"></div>
-        <div class="step-dot todo" id="sd1">2</div>
-        <div class="step-line" id="sl1"></div>
-        <div class="step-dot todo" id="sd2">3</div>
-        <div class="step-line" id="sl2"></div>
-        <div class="step-dot todo" id="sd3">4</div>
-        <div class="step-line" id="sl3"></div>
-        <div class="step-dot todo" id="sd4"><i class="ti ti-check" style="font-size:11px" aria-hidden="true"></i></div>
-      </div>
-
-      <div id="step0">
-        <div class="section-title"><i class="ti ti-user" aria-hidden="true"></i> What best describes you?</div>
-        <div class="choice-grid">
-          <button class="choice-btn" onclick="pickType('buyer',this)">
-            <i class="ti ti-key" aria-hidden="true"></i>
-            <div><div class="c-label">Buyer</div><div class="c-sub">Looking to purchase</div></div>
-          </button>
-          <button class="choice-btn" onclick="pickType('seller',this)">
-            <i class="ti ti-home-dollar" aria-hidden="true"></i>
-            <div><div class="c-label">Seller</div><div class="c-sub">Looking to sell</div></div>
-          </button>
-          <button class="choice-btn" onclick="pickType('both',this)">
-            <i class="ti ti-arrows-exchange" aria-hidden="true"></i>
-            <div><div class="c-label">Buy &amp; Sell</div><div class="c-sub">Both at once</div></div>
-          </button>
-          <button class="choice-btn" onclick="pickType('investor',this)">
-            <i class="ti ti-trending-up" aria-hidden="true"></i>
-            <div><div class="c-label">Investor</div><div class="c-sub">Investment purchase</div></div>
-          </button>
-        </div>
-        <div class="nav">
-          <button class="btn-back" disabled><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-          <button class="btn-next" id="n0" onclick="goNext(1)" disabled>Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-
-      <div id="step1" class="hidden">
-        <div class="section-title"><i class="ti ti-id" aria-hidden="true"></i> Your contact information</div>
-        <div class="row2">
-          <div class="field"><label>First name <span class="req">*</span></label><input type="text" id="f-first" placeholder="Maria" oninput="checkStep1()"></div>
-          <div class="field"><label>Last name <span class="req">*</span></label><input type="text" id="f-last" placeholder="Gonzalez" oninput="checkStep1()"></div>
-        </div>
-        <div class="field"><label>Email address <span class="req">*</span></label><input type="email" id="f-email" placeholder="maria@email.com" oninput="checkStep1()"></div>
-        <div class="field"><label>Phone number</label><input type="tel" id="f-phone" placeholder="(510) 555-0100"></div>
-        <div class="field">
-          <label>How did you hear about Ricky?</label>
-          <select id="f-source">
-            <option value="">Select…</option>
-            <option>Instagram</option>
-            <option>Facebook</option>
-            <option>Referral from a friend</option>
-            <option>Google</option>
-            <option>Zillow</option>
-            <option>Open house</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="field hidden" id="referral-field"><label>Who referred you?</label><input type="text" id="f-referral" placeholder="Name of person who referred you"></div>
-        <div class="nav">
-          <button class="btn-back" onclick="goBack(0)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-          <button class="btn-next" id="n1" onclick="goNext(2)" disabled>Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-
-      <div id="step2" class="hidden">
-        <div id="buyer-section">
-          <div class="section-title"><i class="ti ti-key" aria-hidden="true"></i> Buying details</div>
-          <div class="field"><label>Areas or neighborhoods you&rsquo;re interested in</label><input type="text" id="f-areas" placeholder="e.g. Walnut Creek, Concord, Danville, Bay Area"></div>
-          <div class="row2">
-            <div class="field">
-              <label>Price range</label>
-              <select id="f-price">
-                <option value="">Select…</option>
-                <option>Under $500K</option>
-                <option>$500K &ndash; $750K</option>
-                <option>$750K &ndash; $1M</option>
-                <option>$1M &ndash; $1.5M</option>
-                <option>$1.5M+</option>
-                <option>Not sure yet</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Pre-approval status</label>
-              <select id="f-approval">
-                <option value="">Select…</option>
-                <option>Yes, pre-approved</option>
-                <option>In process</option>
-                <option>Not yet</option>
-                <option>Cash buyer</option>
-              </select>
-            </div>
-          </div>
-          <div class="field"><label>Must-haves or specific needs</label><textarea id="f-musthaves" placeholder="e.g. 3 bed, 2 bath, good school district, garage, backyard…"></textarea></div>
-        </div>
-        <div id="seller-section" class="hidden">
-          <div class="divider" id="seller-divider" style="display:none"></div>
-          <div class="section-title"><i class="ti ti-home-dollar" aria-hidden="true"></i> Selling details</div>
-          <div class="field"><label>Property address</label><input type="text" id="f-address" placeholder="1234 Oak St, Walnut Creek, CA 94596"></div>
-          <div class="row3">
-            <div class="field">
-              <label>Property type</label>
-              <select id="f-proptype">
-                <option value="">Select…</option>
-                <option>Single family</option>
-                <option>Condo / townhome</option>
-                <option>Multi-family</option>
-                <option>Land</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="field"><label>Years owned</label><input type="number" id="f-years" placeholder="e.g. 8" min="0"></div>
-            <div class="field">
-              <label>Condition</label>
-              <select id="f-condition">
-                <option value="">Select…</option>
-                <option>Move-in ready</option>
-                <option>Minor updates needed</option>
-                <option>Fixer-upper</option>
-                <option>Not sure</option>
-              </select>
-            </div>
-          </div>
-          <div class="field"><label>Price expectation</label><input type="text" id="f-priceexp" placeholder="e.g. $850,000 or 'not sure yet'"></div>
-        </div>
-        <div class="field" style="margin-top:.5rem"><label>What&rsquo;s motivating your move?</label><textarea id="f-motivation" placeholder="e.g. Upsizing for growing family, relocating for work, ready to downsize…"></textarea></div>
-        <div class="nav">
-          <button class="btn-back" onclick="goBack(1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-          <button class="btn-next" onclick="goNext(3)">Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-
-      <div id="step3" class="hidden">
-        <div class="section-title"><i class="ti ti-calendar" aria-hidden="true"></i> When are you looking to make a move?</div>
-        <button class="timeline-opt" onclick="pickTime('0-30','Hot',this)">
-          <span class="t-label">Ready now &mdash; within 30 days</span>
-          <span class="tag-pill tag-hot">Hot</span>
-        </button>
-        <button class="timeline-opt" onclick="pickTime('30-90','Warm',this)">
-          <span class="t-label">Soon &mdash; 1 to 3 months</span>
-          <span class="tag-pill tag-warm">Warm</span>
-        </button>
-        <button class="timeline-opt" onclick="pickTime('90-180','Nurture',this)">
-          <span class="t-label">Planning ahead &mdash; 3 to 6 months</span>
-          <span class="tag-pill tag-nurture">Nurture</span>
-        </button>
-        <button class="timeline-opt" onclick="pickTime('180+','Long-Term',this)">
-          <span class="t-label">Exploring &mdash; 6 months or more</span>
-          <span class="tag-pill tag-long">Long-Term</span>
-        </button>
-        <div class="field" style="margin-top:1rem"><label>Anything else you&rsquo;d like Ricky to know?</label><textarea id="f-notes" placeholder="Any questions, concerns, or context that would help him prepare for your call…"></textarea></div>
-        <div class="nav">
-          <button class="btn-back" onclick="goBack(2)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-          <button class="btn-next" id="n3" onclick="goNext(4)" disabled>Continue <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-
-      <div id="step4" class="hidden">
-        <div class="section-title"><i class="ti ti-clipboard-check" aria-hidden="true"></i> Review your information</div>
-        <div style="background:#f8faff;border-radius:10px;border:0.5px solid #bfdbfe;padding:1rem 1.25rem;margin-bottom:1rem">
-          <div class="summary-grid" id="summary-content"></div>
-          <div class="tags-row" id="summary-tags"></div>
-        </div>
-        <div id="submit-alert"></div>
-        <div class="nav">
-          <button class="btn-back" onclick="goBack(3)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Back</button>
-          <button class="btn-submit" id="submit-btn" onclick="submitForm()">
-            <i class="ti ti-send" aria-hidden="true"></i> Submit to Ricky
-          </button>
-        </div>
-      </div>
-
-      <div id="step-success" class="hidden success-state">
-        <div class="success-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
-        <div style="font-size:19px;font-weight:500;color:#1B3A5C;margin-bottom:.5rem">You&rsquo;re all set!</div>
-        <div style="font-size:14px;color:#6b7280;line-height:1.6">Thanks for reaching out. Ricky will personally be in touch within 24 hours to set up your consultation.</div>
-        <div class="next-steps" style="margin-top:1.25rem">
-          <div style="font-size:12px;font-weight:500;color:#1B3A5C;margin-bottom:.625rem">What happens next</div>
-          <div class="next-step-item"><i class="ti ti-phone" aria-hidden="true"></i><span>Ricky reviews your info and reaches out within 24 hours</span></div>
-          <div class="next-step-item"><i class="ti ti-calendar" aria-hidden="true"></i><span>You&rsquo;ll schedule a free, no-pressure consultation call</span></div>
-          <div class="next-step-item"><i class="ti ti-star" aria-hidden="true"></i><span>Ricky builds a custom plan tailored to your goals</span></div>
-        </div>
-        <div style="margin-top:1.5rem;padding-top:1rem;border-top:0.5px solid #f3f4f6">
-          <div style="font-size:12px;color:#6b7280;margin-bottom:.5rem">Connect with Ricky</div>
-          <div style="display:flex;gap:10px;justify-content:center">
-            <a href="https://instagram.com" target="_blank" style="display:flex;align-items:center;gap:5px;font-size:13px;color:#2E75B6;text-decoration:none"><i class="ti ti-brand-instagram" aria-hidden="true"></i> Instagram</a>
-            <span style="color:#d1d5db">·</span>
-            <a href="mailto:ricky@blvdrealestate.com" style="display:flex;align-items:center;gap:5px;font-size:13px;color:#2E75B6;text-decoration:none"><i class="ti ti-mail" aria-hidden="true"></i> Email</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;font-size:11px;color:#9ca3af;padding-bottom:1rem">
-      <i class="ti ti-lock" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> Your info is secure and will only be used to contact you about real estate services.
-    </div>
-  </div>
-</div>
-
-<script>
-let state={type:'',timeline:'',timelineTag:'',apiKey:'',fubSource:'Website Form'};
-let currentStep=0;
-
-function activateForm(){
-  const k=document.getElementById('api-key-input').value.trim();
-  const s=document.getElementById('source-input').value.trim();
-  if(!k){alert('Please paste your FUB API key.');return;}
-  state.apiKey=k;
-  state.fubSource=s||'Website Form';
-  const encoded=btoa(JSON.stringify({k,s:s||'Website Form'}));
-  const url=window.location.href.split('?')[0]+'?cfg='+encoded;
-  document.getElementById('share-url').textContent=url;
-  document.getElementById('setup-card').classList.add('hidden');
-  document.getElementById('setup-banner').classList.add('hidden');
-  document.getElementById('link-card').classList.remove('hidden');
+  );
 }
 
-function copyLink(){
-  const url=document.getElementById('share-url').textContent;
-  navigator.clipboard.writeText(url).then(()=>{
-    const btn=document.getElementById('copy-btn');
-    btn.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Copied!';
-    setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy" aria-hidden="true"></i> Copy link';},2000);
+function Field({ label, required, children }) {
+  return (
+    <div style={{ marginBottom: "1.1rem" }}>
+      <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: "var(--color-text-secondary)", marginBottom: 5 }}>
+        {label}{required && <span style={{ color: "#E24B4A", marginLeft: 3 }}>*</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function Input({ ...props }) {
+  return <input {...props} style={{ width: "100%", boxSizing: "border-box", ...props.style }} />;
+}
+
+function Select({ children, ...props }) {
+  return <select {...props} style={{ width: "100%", boxSizing: "border-box", ...props.style }}>{children}</select>;
+}
+
+function StatusBadge({ status, message }) {
+  const colors = {
+    success: { bg: "var(--color-background-success)", border: "var(--color-border-success)", text: "var(--color-text-success)" },
+    error: { bg: "var(--color-background-danger)", border: "var(--color-border-danger)", text: "var(--color-text-danger)" },
+    loading: { bg: "var(--color-background-info)", border: "var(--color-border-info)", text: "var(--color-text-info)" },
+  };
+  const c = colors[status];
+  return (
+    <div style={{ padding: "0.75rem 1rem", borderRadius: "var(--border-radius-md)", background: c.bg, border: `1px solid ${c.border}`, color: c.text, fontSize: 14, display: "flex", alignItems: "center", gap: 8, marginBottom: "1rem" }}>
+      <i className={`ti ${status === "success" ? "ti-circle-check" : status === "error" ? "ti-alert-circle" : "ti-loader-2"}`} style={{ fontSize: 16 }} aria-hidden="true" />
+      {message}
+    </div>
+  );
+}
+
+export default function LeadIntakeForm() {
+  const [step, setStep] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+
+  const [form, setForm] = useState({
+    leadType: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    source: "",
+    referredBy: "",
+    // Buyer fields
+    targetAreas: "",
+    priceRange: "",
+    preApproval: "",
+    mustHaves: "",
+    // Seller fields
+    propertyAddress: "",
+    yearsOwned: "",
+    propertyType: "",
+    priceExpectation: "",
+    condition: "",
+    // Shared
+    motivation: "",
+    timeline: "",
+    notes: "",
+    apiKey: "",
   });
-}
 
-function shareVia(type){
-  const url=document.getElementById('share-url').textContent;
-  const msg=document.getElementById('share-msg');
-  const templates={
-    text:`Hey! I'd love to connect about your real estate goals. Fill out this quick form and I'll reach out personally to set up a free consultation: ${url}`,
-    email:`Subject: Let's talk real estate\n\nHi,\n\nI'd love to learn more about what you're looking for. Fill out this quick form and I'll be in touch within 24 hours to set up a free, no-pressure consultation.\n\n${url}\n\nLooking forward to connecting!\nRicky Alvarez | Alvarez & Associates`,
-    bio:`Update your Instagram bio link to: ${url}`,
-    qr:`Go to qr.io or qr-code-generator.com and paste your link to generate a QR code for flyers, postcards, and open houses:\n${url}`
-  };
-  msg.innerHTML=`<i class="ti ti-info-circle" aria-hidden="true"></i><span style="white-space:pre-wrap">${templates[type]}</span>`;
-  msg.classList.remove('hidden');
-}
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-function showForm(){
-  document.getElementById('link-card').classList.add('hidden');
-  document.getElementById('form-wrapper').classList.remove('hidden');
-}
+  const isBuyer = ["buyer", "both", "investor"].includes(form.leadType);
+  const isSeller = ["seller", "both"].includes(form.leadType);
 
-function pickType(type,el){
-  state.type=type;
-  document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('n0').disabled=false;
-  const bs=document.getElementById('buyer-section');
-  const ss=document.getElementById('seller-section');
-  const sd=document.getElementById('seller-divider');
-  if(type==='buyer'||type==='investor'){bs.classList.remove('hidden');ss.classList.add('hidden');sd.style.display='none';}
-  else if(type==='seller'){bs.classList.add('hidden');ss.classList.remove('hidden');sd.style.display='none';}
-  else{bs.classList.remove('hidden');ss.classList.remove('hidden');sd.style.display='block';}
-}
+  const timelineObj = TIMELINE_OPTIONS.find(t => t.value === form.timeline);
+  const hotTag = timelineObj?.tag || "";
+  const tags = [...(TAG_MAP[form.leadType] || []), ...(hotTag ? [hotTag] : [])];
 
-function pickTime(val,tag,el){
-  state.timeline=val;state.timelineTag=tag;
-  document.querySelectorAll('.timeline-opt').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('n3').disabled=false;
-}
+  async function submitToFUB() {
+    setSubmitting(true);
+    setSubmitStatus(null);
 
-function checkStep1(){
-  const ok=document.getElementById('f-first').value.trim()&&document.getElementById('f-last').value.trim()&&document.getElementById('f-email').value.includes('@');
-  document.getElementById('n1').disabled=!ok;
-}
+    const payload = {
+      firstName: form.firstName,
+      lastName: form.lastName,
+      emails: form.email ? [{ value: form.email, type: "work" }] : [],
+      phones: form.phone ? [{ value: form.phone, type: "mobile" }] : [],
+      stage: STAGE_MAP[form.leadType] || "Inquired",
+      source: form.source || "Other",
+      tags: tags,
+      notes: buildNotes(),
+    };
 
-document.getElementById('f-source').addEventListener('change',function(){
-  const rf=document.getElementById('referral-field');
-  this.value==='Referral from a friend'?rf.classList.remove('hidden'):rf.classList.add('hidden');
-});
+    try {
+      const res = await fetch("https://api.followupboss.com/v1/people", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Basic " + btoa(form.apiKey + ":"),
+        },
+        body: JSON.stringify(payload),
+      });
 
-function updateStepper(s){
-  for(let i=0;i<5;i++){
-    const d=document.getElementById('sd'+i);
-    if(i<s){d.className='step-dot done';d.innerHTML='<i class="ti ti-check" style="font-size:11px" aria-hidden="true"></i>';}
-    else if(i===s){d.className='step-dot active';d.textContent=i<4?i+1:'✓';}
-    else{d.className='step-dot todo';d.textContent=i<4?i+1:'✓';}
-    if(i<4){document.getElementById('sl'+i).className='step-line'+(i<s?' done':'');}
-  }
-  document.getElementById('prog').style.width=((s/4)*100)+'%';
-}
-
-function goNext(n){
-  document.getElementById('step'+currentStep).classList.add('hidden');
-  if(n===4)buildSummary();
-  document.getElementById('step'+n).classList.remove('hidden');
-  currentStep=n;
-  updateStepper(n);
-}
-
-function goBack(n){
-  document.getElementById('step'+currentStep).classList.add('hidden');
-  document.getElementById('step'+n).classList.remove('hidden');
-  currentStep=n;
-  updateStepper(n);
-}
-
-function buildSummary(){
-  const isBuyer=['buyer','both','investor'].includes(state.type);
-  const isSeller=['seller','both'].includes(state.type);
-  const rows=[
-    ['Name',v('f-first')+' '+v('f-last')],
-    ['Email',v('f-email')],
-    ['Phone',v('f-phone')||'—'],
-    ['Type',state.type.charAt(0).toUpperCase()+state.type.slice(1)],
-    ['Source',v('f-source')||'—'],
-    ['Timeline',{0:'0-30',1:'30-90',2:'90-180',3:'180+'}[['0-30','30-90','90-180','180+'].indexOf(state.timeline)]===state.timeline?(['Ready now (30 days)','Soon (1-3 months)','Planning ahead (3-6 months)','Exploring (6+ months)'][['0-30','30-90','90-180','180+'].indexOf(state.timeline)]):'—'],
-  ];
-  if(isBuyer){
-    if(v('f-areas'))rows.push(['Target areas',v('f-areas')]);
-    if(v('f-price'))rows.push(['Price range',v('f-price')]);
-    if(v('f-approval'))rows.push(['Pre-approval',v('f-approval')]);
-  }
-  if(isSeller){
-    if(v('f-address'))rows.push(['Property',v('f-address')]);
-    if(v('f-condition'))rows.push(['Condition',v('f-condition')]);
-    if(v('f-priceexp'))rows.push(['Price expectation',v('f-priceexp')]);
-  }
-  const sc=document.getElementById('summary-content');
-  sc.innerHTML=rows.map(([k,val])=>`<div class="summary-row"><span class="sk">${k}</span><span class="sv">${val}</span></div>`).join('');
-  const tags=[...({'buyer':['Buyer'],'seller':['Seller'],'both':['Buyer','Seller'],'investor':['Buyer','Investor']}[state.type]||[]),state.timelineTag].filter(Boolean);
-  const tc={'Hot':'tag-hot','Warm':'tag-warm','Nurture':'tag-nurture','Long-Term':'tag-long'};
-  document.getElementById('summary-tags').innerHTML=tags.map(t=>`<span class="tag-pill ${tc[t]||'tag-long'}">${t}</span>`).join('');
-}
-
-function v(id){return(document.getElementById(id)||{}).value||'';}
-
-function buildNotes(){
-  const isBuyer=['buyer','both','investor'].includes(state.type);
-  const isSeller=['seller','both'].includes(state.type);
-  const tl=['0-30'=>'Ready now (within 30 days)','30-90'=>'Soon (1-3 months)','90-180'=>'Planning ahead (3-6 months)','180+'=>'Exploring (6+ months)'][state.timeline];
-  const lines=[
-    `=== LEAD INTAKE FORM — ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})} ===`,
-    `Lead Type: ${state.type.charAt(0).toUpperCase()+state.type.slice(1)}`,
-    `Timeline: ${{'0-30':'Ready now (within 30 days)','30-90':'Soon (1-3 months)','90-180':'Planning ahead (3-6 months)','180+':'Exploring (6+ months)'}[state.timeline]||state.timeline}`,
-    `FUB Tags: ${[...({'buyer':['Buyer'],'seller':['Seller'],'both':['Buyer','Seller'],'investor':['Buyer','Investor']}[state.type]||[]),state.timelineTag].filter(Boolean).join(', ')}`,
-    `Source: ${v('f-source')||'Website Form'}${v('f-referral')?' (Referred by: '+v('f-referral')+')':''}`,
-    '',
-  ];
-  if(isBuyer){
-    lines.push('--- BUYER INFO ---');
-    if(v('f-areas'))lines.push('Target Areas: '+v('f-areas'));
-    if(v('f-price'))lines.push('Price Range: '+v('f-price'));
-    if(v('f-approval'))lines.push('Pre-Approval: '+v('f-approval'));
-    if(v('f-musthaves'))lines.push('Must-Haves: '+v('f-musthaves'));
-    lines.push('');
-  }
-  if(isSeller){
-    lines.push('--- SELLER INFO ---');
-    if(v('f-address'))lines.push('Property: '+v('f-address'));
-    if(v('f-proptype'))lines.push('Type: '+v('f-proptype'));
-    if(v('f-years'))lines.push('Years Owned: '+v('f-years'));
-    if(v('f-condition'))lines.push('Condition: '+v('f-condition'));
-    if(v('f-priceexp'))lines.push('Price Expectation: '+v('f-priceexp'));
-    lines.push('');
-  }
-  if(v('f-motivation'))lines.push('Motivation: '+v('f-motivation'));
-  if(v('f-notes'))lines.push('Additional Notes: '+v('f-notes'));
-  lines.push('');
-  lines.push('— Submitted via Alvarez & Associates Lead Intake Form');
-  return lines.join('\n');
-}
-
-async function submitForm(){
-  const btn=document.getElementById('submit-btn');
-  const alertEl=document.getElementById('submit-alert');
-  btn.disabled=true;
-  btn.innerHTML='<i class="ti ti-loader-2" aria-hidden="true"></i> Submitting…';
-  alertEl.innerHTML='';
-
-  const tags=[...({'buyer':['Buyer'],'seller':['Seller'],'both':['Buyer','Seller'],'investor':['Buyer','Investor']}[state.type]||[]),state.timelineTag].filter(Boolean);
-  const payload={
-    firstName:v('f-first'),
-    lastName:v('f-last'),
-    emails:v('f-email')?[{value:v('f-email'),type:'work'}]:[],
-    phones:v('f-phone')?[{value:v('f-phone'),type:'mobile'}]:[],
-    stage:'Inquired',
-    source:v('f-source')||state.fubSource||'Website Form',
-    tags:tags,
-    notes:buildNotes()
-  };
-
-  try{
-    const res=await fetch('https://api.followupboss.com/v1/people',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Basic '+btoa(state.apiKey+':')},
-      body:JSON.stringify(payload)
-    });
-    if(res.ok||res.status===201){
-      document.getElementById('step4').classList.add('hidden');
-      document.getElementById('step-success').classList.remove('hidden');
-      updateStepper(5);
-    } else {
-      const err=await res.json().catch(()=>({}));
-      alertEl.innerHTML=`<div class="alert alert-error"><i class="ti ti-alert-circle" aria-hidden="true"></i>Submission error: ${err.message||'Please check your connection and try again.'}</div>`;
-      btn.disabled=false;
-      btn.innerHTML='<i class="ti ti-send" aria-hidden="true"></i> Submit to Ricky';
+      if (res.ok) {
+        setSubmitStatus({ type: "success", message: "Lead successfully added to Follow Up Boss!" });
+        setSubmitted(true);
+      } else {
+        const err = await res.json();
+        setSubmitStatus({ type: "error", message: `FUB error: ${err.message || res.status}. Check your API key and try again.` });
+      }
+    } catch (e) {
+      setSubmitStatus({ type: "error", message: "Could not reach Follow Up Boss. Check your API key and network connection." });
     }
-  } catch(e){
-    alertEl.innerHTML=`<div class="alert alert-error"><i class="ti ti-alert-circle" aria-hidden="true"></i>Could not connect. Please check your internet and try again.</div>`;
-    btn.disabled=false;
-    btn.innerHTML='<i class="ti ti-send" aria-hidden="true"></i> Submit to Ricky';
+    setSubmitting(false);
   }
-}
 
-(function init(){
-  try{
-    const params=new URLSearchParams(window.location.search);
-    const cfg=params.get('cfg');
-    if(cfg){
-      const parsed=JSON.parse(atob(cfg));
-      state.apiKey=parsed.k;
-      state.fubSource=parsed.s||'Website Form';
-      document.getElementById('setup-card').classList.add('hidden');
-      document.getElementById('setup-banner').classList.add('hidden');
-      document.getElementById('form-wrapper').classList.remove('hidden');
+  function buildNotes() {
+    const lines = [];
+    lines.push(`=== INTAKE FORM — ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} ===`);
+    lines.push(`Lead Type: ${form.leadType.charAt(0).toUpperCase() + form.leadType.slice(1)}`);
+    lines.push(`Source: ${form.source}${form.referredBy ? ` (Referred by: ${form.referredBy})` : ""}`);
+    lines.push(`Timeline: ${timelineObj?.label || form.timeline}`);
+    lines.push(`FUB Tags: ${tags.join(", ")}`);
+    lines.push("");
+    if (isBuyer) {
+      lines.push("--- BUYER INFO ---");
+      if (form.targetAreas) lines.push(`Target Areas: ${form.targetAreas}`);
+      if (form.priceRange) lines.push(`Price Range: ${form.priceRange}`);
+      if (form.preApproval) lines.push(`Pre-Approval: ${form.preApproval}`);
+      if (form.mustHaves) lines.push(`Must-Haves: ${form.mustHaves}`);
     }
-  } catch(e){}
-})();
-</script>
+    if (isSeller) {
+      lines.push("--- SELLER INFO ---");
+      if (form.propertyAddress) lines.push(`Property: ${form.propertyAddress}`);
+      if (form.yearsOwned) lines.push(`Years Owned: ${form.yearsOwned}`);
+      if (form.propertyType) lines.push(`Type: ${form.propertyType}`);
+      if (form.priceExpectation) lines.push(`Price Expectation: ${form.priceExpectation}`);
+      if (form.condition) lines.push(`Condition: ${form.condition}`);
+    }
+    if (form.motivation) { lines.push(""); lines.push(`Motivation: ${form.motivation}`); }
+    if (form.notes) { lines.push(""); lines.push(`Additional Notes: ${form.notes}`); }
+    lines.push("");
+    lines.push("— Submitted via Alvarez & Associates Lead Intake Form");
+    return lines.join("\n");
+  }
+
+  function canAdvance() {
+    if (step === 0) return !!form.leadType;
+    if (step === 1) return form.firstName && form.lastName && (form.email || form.phone);
+    if (step === 2) return true;
+    if (step === 3) return !!form.timeline;
+    if (step === 4) return !!form.apiKey;
+    return true;
+  }
+
+  const stepContent = [
+    // STEP 0: Lead Type
+    <div key="type">
+      <p style={{ fontSize: 14, color: "var(--color-text-secondary)", marginBottom: "1.25rem" }}>
+        What best describes this lead?
+      </p>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+        {[
+          { v: "buyer", label: "Buyer", icon: "ti-key", sub: "Looking to purchase" },
+          { v: "seller", label: "Seller", icon: "ti-home-dollar", sub: "Looking to sell" },
+          { v: "both", label: "Buy + Sell", icon: "ti-arrows-exchange", sub: "Both sides" },
+          { v: "investor", label: "Investor", icon: "ti-trending-up", sub: "Investment purchase" },
+        ].map(opt => (
+          <ChoiceCard key={opt.v} label={opt.label} sub={opt.sub} icon={opt.icon} selected={form.leadType === opt.v} onClick={() => set("leadType", opt.v)} />
+        ))}
+      </div>
+    </div>,
+
+    // STEP 1: Contact Info
+    <div key="contact">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 12px" }}>
+        <Field label="First name" required><Input type="text" value={form.firstName} onChange={e => set("firstName", e.target.value)} placeholder="Maria" /></Field>
+        <Field label="Last name" required><Input type="text" value={form.lastName} onChange={e => set("lastName", e.target.value)} placeholder="Gonzalez" /></Field>
+      </div>
+      <Field label="Email address"><Input type="email" value={form.email} onChange={e => set("email", e.target.value)} placeholder="maria@email.com" /></Field>
+      <Field label="Phone number"><Input type="tel" value={form.phone} onChange={e => set("phone", e.target.value)} placeholder="(510) 555-0100" /></Field>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 12px" }}>
+        <Field label="Lead source">
+          <Select value={form.source} onChange={e => set("source", e.target.value)}>
+            <option value="">Select source…</option>
+            {SOURCE_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+          </Select>
+        </Field>
+        {form.source === "Referral" && (
+          <Field label="Referred by"><Input type="text" value={form.referredBy} onChange={e => set("referredBy", e.target.value)} placeholder="Name of referral" /></Field>
+        )}
+      </div>
+    </div>,
+
+    // STEP 2: Details
+    <div key="details">
+      {isBuyer && (
+        <>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.75rem" }}>
+            <i className="ti ti-key" style={{ fontSize: 15, color: "#2E75B6" }} aria-hidden="true" />
+            <span style={{ fontSize: 13, fontWeight: 500, color: "#2E75B6" }}>Buyer details</span>
+          </div>
+          <Field label="Target areas / neighborhoods">
+            <Input type="text" value={form.targetAreas} onChange={e => set("targetAreas", e.target.value)} placeholder="e.g. Walnut Creek, Concord, Pleasant Hill" />
+          </Field>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 12px" }}>
+            <Field label="Price range">
+              <Select value={form.priceRange} onChange={e => set("priceRange", e.target.value)}>
+                <option value="">Select…</option>
+                {PRICE_RANGES.map(r => <option key={r} value={r}>{r}</option>)}
+              </Select>
+            </Field>
+            <Field label="Pre-approval status">
+              <Select value={form.preApproval} onChange={e => set("preApproval", e.target.value)}>
+                <option value="">Select…</option>
+                {APPROVAL_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+              </Select>
+            </Field>
+          </div>
+          <Field label="Must-haves / specific needs">
+            <textarea value={form.mustHaves} onChange={e => set("mustHaves", e.target.value)} rows={2} placeholder="e.g. 3 bed, 2 bath, garage, good school district, backyard" style={{ width: "100%", boxSizing: "border-box", resize: "vertical" }} />
+          </Field>
+        </>
+      )}
+      {isSeller && (
+        <>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.75rem", marginTop: isBuyer ? "1rem" : 0 }}>
+            <i className="ti ti-home-dollar" style={{ fontSize: 15, color: "#2E75B6" }} aria-hidden="true" />
+            <span style={{ fontSize: 13, fontWeight: 500, color: "#2E75B6" }}>Seller details</span>
+          </div>
+          <Field label="Property address">
+            <Input type="text" value={form.propertyAddress} onChange={e => set("propertyAddress", e.target.value)} placeholder="1234 Oak St, Walnut Creek, CA 94596" />
+          </Field>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0 12px" }}>
+            <Field label="Years owned">
+              <Input type="number" min="0" value={form.yearsOwned} onChange={e => set("yearsOwned", e.target.value)} placeholder="e.g. 8" />
+            </Field>
+            <Field label="Property type">
+              <Select value={form.propertyType} onChange={e => set("propertyType", e.target.value)}>
+                <option value="">Select…</option>
+                {["Single Family", "Condo / Townhome", "Multi-Family", "Land", "Other"].map(t => <option key={t} value={t}>{t}</option>)}
+              </Select>
+            </Field>
+            <Field label="Condition">
+              <Select value={form.condition} onChange={e => set("condition", e.target.value)}>
+                <option value="">Select…</option>
+                {["Move-in ready", "Minor updates needed", "Fixer-upper", "Unknown"].map(c => <option key={c} value={c}>{c}</option>)}
+              </Select>
+            </Field>
+          </div>
+          <Field label="Price expectation">
+            <Input type="text" value={form.priceExpectation} onChange={e => set("priceExpectation", e.target.value)} placeholder="e.g. $850,000 or 'not sure yet'" />
+          </Field>
+        </>
+      )}
+      <Field label="Motivation for moving">
+        <textarea value={form.motivation} onChange={e => set("motivation", e.target.value)} rows={2} placeholder="e.g. Upsizing for growing family, relocating for work, downsizing after kids moved out…" style={{ width: "100%", boxSizing: "border-box", resize: "vertical" }} />
+      </Field>
+    </div>,
+
+    // STEP 3: Timeline
+    <div key="timeline">
+      <p style={{ fontSize: 14, color: "var(--color-text-secondary)", marginBottom: "1.25rem" }}>
+        When is {form.firstName || "this lead"} looking to make a move?
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {TIMELINE_OPTIONS.map(opt => (
+          <button key={opt.value} onClick={() => set("timeline", opt.value)} style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "0.875rem 1rem",
+            border: form.timeline === opt.value ? "2px solid #2E75B6" : "1.5px solid var(--color-border-tertiary)",
+            borderRadius: "var(--border-radius-md)",
+            background: form.timeline === opt.value ? "#EBF3FC" : "var(--color-background-primary)",
+            cursor: "pointer", transition: "all 0.15s", textAlign: "left",
+          }}>
+            <span style={{ fontSize: 14, color: form.timeline === opt.value ? "#1B3A5C" : "var(--color-text-primary)", fontWeight: form.timeline === opt.value ? 500 : 400 }}>
+              {opt.label}
+            </span>
+            <span style={{
+              fontSize: 11, fontWeight: 500, padding: "3px 8px", borderRadius: 20,
+              background: opt.tag === "Hot" ? "#FCEBEB" : opt.tag === "Warm" ? "#FAEEDA" : opt.tag === "Nurture" ? "#EBF3FC" : "#F1EFE8",
+              color: opt.tag === "Hot" ? "#A32D2D" : opt.tag === "Warm" ? "#854F0B" : opt.tag === "Nurture" ? "#185FA5" : "#5F5E5A",
+            }}>
+              {opt.tag}
+            </span>
+          </button>
+        ))}
+      </div>
+      <Field label="Additional notes for Ricky" style={{ marginTop: "1.25rem" }}>
+        <textarea value={form.notes} onChange={e => set("notes", e.target.value)} rows={3} placeholder="Anything else Ricky should know before the appointment…" style={{ width: "100%", boxSizing: "border-box", resize: "vertical", marginTop: "1rem" }} />
+      </Field>
+    </div>,
+
+    // STEP 4: Confirm + Submit
+    <div key="confirm">
+      <div style={{ background: "var(--color-background-secondary)", borderRadius: "var(--border-radius-lg)", padding: "1rem 1.25rem", marginBottom: "1.25rem" }}>
+        <p style={{ fontSize: 12, fontWeight: 500, color: "var(--color-text-tertiary)", marginBottom: "0.75rem", letterSpacing: "0.05em" }}>LEAD SUMMARY</p>
+        {[
+          ["Name", `${form.firstName} ${form.lastName}`],
+          ["Email", form.email || "—"],
+          ["Phone", form.phone || "—"],
+          ["Type", form.leadType ? form.leadType.charAt(0).toUpperCase() + form.leadType.slice(1) : "—"],
+          ["Source", form.source || "—"],
+          ["Timeline", timelineObj?.label || "—"],
+          ["FUB Stage", STAGE_MAP[form.leadType] || "—"],
+          ["FUB Tags", tags.join(", ") || "—"],
+          ...(isBuyer ? [
+            ["Target Areas", form.targetAreas || "—"],
+            ["Price Range", form.priceRange || "—"],
+            ["Pre-Approval", form.preApproval || "—"],
+          ] : []),
+          ...(isSeller ? [
+            ["Property", form.propertyAddress || "—"],
+            ["Condition", form.condition || "—"],
+            ["Price Expectation", form.priceExpectation || "—"],
+          ] : []),
+        ].map(([k, v]) => (
+          <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0", borderBottom: "0.5px solid var(--color-border-tertiary)", fontSize: 13 }}>
+            <span style={{ color: "var(--color-text-secondary)" }}>{k}</span>
+            <span style={{ color: "var(--color-text-primary)", fontWeight: 400, maxWidth: "60%", textAlign: "right" }}>{v}</span>
+          </div>
+        ))}
+      </div>
+
+      <Field label="Follow Up Boss API key" required>
+        <div style={{ position: "relative" }}>
+          <Input type="password" value={form.apiKey} onChange={e => set("apiKey", e.target.value)} placeholder="Paste your FUB API key here" />
+        </div>
+        <p style={{ fontSize: 11, color: "var(--color-text-tertiary)", marginTop: 5 }}>
+          Find this in FUB → Admin → API → Your API Keys. This is never stored.
+        </p>
+      </Field>
+
+      {submitStatus && (
+        <StatusBadge status={submitStatus.type} message={submitStatus.message} />
+      )}
+    </div>,
+  ];
+
+  if (submitted) {
+    return (
+      <div style={{ padding: "2rem 0", textAlign: "center" }}>
+        <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#EAF3DE", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem" }}>
+          <i className="ti ti-circle-check" style={{ fontSize: 28, color: "#3B6D11" }} aria-hidden="true" />
+        </div>
+        <h2 style={{ fontSize: 18, fontWeight: 500, marginBottom: 8 }}>{form.firstName} {form.lastName} added to FUB</h2>
+        <p style={{ fontSize: 14, color: "var(--color-text-secondary)", marginBottom: "1.5rem" }}>
+          Stage: <strong>Inquired</strong> &nbsp;·&nbsp; Tags: <strong>{tags.join(", ")}</strong>
+        </p>
+        <div style={{ background: "var(--color-background-secondary)", borderRadius: "var(--border-radius-md)", padding: "0.875rem 1rem", fontSize: 13, color: "var(--color-text-secondary)", marginBottom: "1.5rem", textAlign: "left" }}>
+          <strong style={{ color: "var(--color-text-primary)", display: "block", marginBottom: 6 }}>Next steps for Grayson:</strong>
+          <p style={{ margin: "4px 0" }}>1. Open FUB and verify the contact was created correctly</p>
+          <p style={{ margin: "4px 0" }}>2. Assign the appropriate action plan based on timeline ({hotTag})</p>
+          <p style={{ margin: "4px 0" }}>3. Alert Ricky via Google Chat if this is a Hot lead</p>
+          <p style={{ margin: "4px 0" }}>4. Send the appointment confirmation text (Section 4, Template T2)</p>
+        </div>
+        <button onClick={() => { setSubmitted(false); setSubmitStatus(null); setStep(0); setForm(f => ({ ...f, firstName: "", lastName: "", email: "", phone: "", source: "", referredBy: "", leadType: "", targetAreas: "", priceRange: "", preApproval: "", mustHaves: "", propertyAddress: "", yearsOwned: "", propertyType: "", priceExpectation: "", condition: "", motivation: "", timeline: "", notes: "" })); }}
+          style={{ fontSize: 14 }}>
+          <i className="ti ti-plus" style={{ marginRight: 6 }} aria-hidden="true" />
+          Add another lead
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: 640, margin: "0 auto", padding: "1.5rem 0" }}>
+      <h2 className="sr-only">Lead intake form for Alvarez &amp; Associates — submit lead information to Follow Up Boss</h2>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: "1.75rem" }}>
+        <div style={{ width: 36, height: 36, borderRadius: "var(--border-radius-md)", background: "#1B3A5C", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <i className="ti ti-user-plus" style={{ fontSize: 18, color: "#fff" }} aria-hidden="true" />
+        </div>
+        <div>
+          <p style={{ fontSize: 16, fontWeight: 500, margin: 0 }}>Lead intake</p>
+          <p style={{ fontSize: 12, color: "var(--color-text-secondary)", margin: 0 }}>Alvarez & Associates · BLVD Real Estate</p>
+        </div>
+      </div>
+
+      <ProgressBar current={step} />
+
+      <div style={{ background: "var(--color-background-primary)", border: "0.5px solid var(--color-border-tertiary)", borderRadius: "var(--border-radius-lg)", padding: "1.5rem 1.5rem 1.25rem" }}>
+        <h3 style={{ fontSize: 15, fontWeight: 500, margin: "0 0 1rem", color: "var(--color-text-primary)" }}>
+          {["What type of lead is this?", "Contact information", "Property & situation details", "Timeline & notes", "Review & submit to Follow Up Boss"][step]}
+        </h3>
+        {stepContent[step]}
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "1rem", gap: 10 }}>
+        <button onClick={() => setStep(s => s - 1)} disabled={step === 0} style={{ opacity: step === 0 ? 0.3 : 1, fontSize: 14 }}>
+          <i className="ti ti-arrow-left" style={{ marginRight: 6 }} aria-hidden="true" />
+          Back
+        </button>
+        {step < STEPS.length - 1 ? (
+          <button onClick={() => setStep(s => s + 1)} disabled={!canAdvance()} style={{ opacity: canAdvance() ? 1 : 0.4, fontSize: 14 }}>
+            Continue
+            <i className="ti ti-arrow-right" style={{ marginLeft: 6 }} aria-hidden="true" />
+          </button>
+        ) : (
+          <button onClick={submitToFUB} disabled={!canAdvance() || submitting} style={{ background: "#1B3A5C", color: "#fff", border: "none", borderRadius: "var(--border-radius-md)", padding: "0 1.25rem", height: 36, fontSize: 14, cursor: "pointer", opacity: canAdvance() && !submitting ? 1 : 0.5, display: "flex", alignItems: "center", gap: 8 }}>
+            {submitting ? <><i className="ti ti-loader-2" style={{ fontSize: 15 }} aria-hidden="true" /> Submitting…</> : <><i className="ti ti-send" style={{ fontSize: 15 }} aria-hidden="true" /> Add to Follow Up Boss</>}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
